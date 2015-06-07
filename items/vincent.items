@@ -1,0 +1,69 @@
+Group All
+Group gGF 		(All)
+Group gFF 		(All)
+Group Weather		(All)
+Group Lights    "Verlichting"  (All)
+Group GF_Living 	"Woonkamer" 	<video> 	(gGF)
+Group GF_Living_Climate "Klimaat woonkamer" <temperature> (GF_Living)
+Group GF_Kitchen 	"Keuken" 	<kitchen> 	(gGF)
+Group GF_Corridor 	"Hal beneden"   <corridor> 	(gGF)
+
+Group FF_Corridor	"Hal boven"	<corridor>  (gFF)
+
+Group GF_Living_Lights  "Lichten woonkamer"  <light-on> (GF_Living)
+
+Group XBMC_Living "XBMC" <video> (GF_Living)
+String XBMC_Living_State "Status [%s]"  <video> (XBMC_Living)  {xbmc="<[#livingRoom|Player.State]"}
+String XBMC_Living_Currently_Playing "Playing [%s]" <video> (XBMC_Living) {xbmc="<[#livingRoom|Player.Title]"}
+
+Group Weather_outside (Weather)
+Number Weather_Temperature 		"Buitentemperatuur [%.1f °C]"	    <temperature> (Weather_outside) {weather="locationId=thuis, type=temperature, property=current"}
+Number Weather_Humidity 		"Luchtvochtigheid buiten [%.1f %%]"	<temperature> (Weather_outside) {weather="locationId=thuis, type=athmosphere, property=humidity"}
+Number Weather_Temperature_min "Buitentemperatuur min [%.1f °C]"	<temperature> (Weather_outside) {weather="locationId=thuis, type=temperature, property=min, scale=0"}
+Number Weather_Temperature_max "Buitentemperatuur max [%.1f °C]"	<temperature> (Weather_outside) {weather="locationId=thuis, type=temperature, property=max, scale=0"}
+Number Weather_Clouds   		"Bewolking [%.0f %%]"  <sun_clouds> (Weather_outside) {weather="locationId=thuis, type=clouds, property=percent"}
+DateTime Weather_LastUpdate     "Laatste update [%1$td.%1$tm.%1$tY %1$tH:%1$tM]"   <temperature> (Weather_outside)     {weather="locationId=thuis, type=condition, property=lastUpdate"}
+
+Group Weather_astro (Weather)
+// shows the sunrise
+DateTime		Time			"Tijd [%1$tT]" <calendar> (Weather_astro)		{ ntp="Europe/Amsterdam:nl_NL" }
+DateTime Sunrise_Time  "Zonsopgang [%1$tH:%1$tM]" <sun> (Weather_astro) {astro="planet=sun, type=rise, property=start"}
+DateTime Daylight_Start_Time  "Daglicht start [%1$tH:%1$tM]" <sun> (Weather_astro) {astro="planet=sun, type=daylight, property=start, offset=-10"}
+DateTime Daylight_End_Time  "Daglicht eind [%1$tH:%1$tM]" <moon> (Weather_astro) {astro="planet=sun, type=daylight, property=end,offset=-10"}
+// schedules a event which starts 15 minutes BEFORE sunrise
+Switch Sunrise_Event {astro="planet=sun, type=rise, property=start, offset=-15"}
+
+// schedules a event which starts 15 minutes BEFORE sunrise
+Switch Sunset_Event  {astro="planet=sun, type=rise, property=end, offset=-15"}
+
+// shows the sunset
+DateTime Sunset_Time   "Zonsondergang [%1$tH:%1$tM]" <moon> (Weather_astro)  {astro="planet=sun, type=set, property=end"}
+
+// azimuth and elevation
+Number   Azimuth        "Azimuth [%.2f]"  (Weather_astro)   {astro="planet=sun, type=position, property=azimuth"}
+Number   Elevation      "Elevation [%.2f]" (Weather_astro)  {astro="planet=sun, type=position, property=elevation"}
+
+// displays the start, end and duration of the astronomical dawn
+//DateTime Astronomical_Dawn_Start        "Astronomical Dawn Start [%1$tH:%1$tM]" (Weather_astro)  {astro="planet=sun, type=astroDawn, property=start"}
+//DateTime Astronomical_Dawn_End          "Astronomical Dawn End [%1$tH:%1$tM]"  (Weather_astro)   {astro="planet=sun, type=astroDawn, property=end"}
+
+DateTime		Date			"Datum [%1$tA, %1$td.%1$tm.%1$tY]"	<calendar>	{ ntp="Europe/Amsterdam:nl_NL" }
+
+// All z-wave items
+Dimmer GF_Living_Lamp_TV "Lamp TV [%d %%]"	<light> (GF_Living, GF_Living_Lights, Lights) {zwave="3"}
+Dimmer GF_Living_Lamp_Bank "Lamp Bank [%d %%]"	<light> (GF_Living, GF_Living_Lights, Lights) {zwave="27"}
+Switch GF_Corridor_Lamp "Lamp Hal beneden"	<light> (GF_Corridor, Lights) {zwave="30"}
+Switch FF_Corridor_Lamp "Lamp Hal boven"	<light> (FF_Corridor, Lights) {zwave="34"}
+Dimmer GF_Kitchen_Lamp "Lamp keuken [%d %%]"	<light> (GF_Kitchen, GF_Living_Lights, Lights) {zwave="35:refresh_interval=15"}
+Number GF_Living_Temperature "Temperatuur woonkamer [%.1f °C]" <temperature> (GF_Living,GF_Living_Climate) { zwave="36:command=sensor_multilevel,sensor_type=1"}
+Number GF_Living_Humidity "Luchtvochtigheid woonkamer [%.1f %%]" <temperature> (GF_Living,GF_Living_Climate) { zwave="36:command=sensor_multilevel,sensor_type=5"}
+Number GF_Living_Luminance "Lichtsterkte woonkamer [%d lux]" <sun> (GF_Living) { zwave="36:command=sensor_multilevel,sensor_type=3"}
+Contact GF_Living_Motion "Aanwezigheid woonkamer [%d]" <sun> (GF_Living) { zwave="36:command=sensor_binary,respond_to_basic=true"}
+Number GF_Living_Battery "Batterij [%s %%]" <energy> (GF_Living) {zwave="36:command=battery"}
+
+Contact GF_Corridor_Motion "Aanwezigheid hal [%d]" <sun> (GF_Corridor) { zwave="37:command=sensor_binary,respond_to_basic=true"}
+Number GF_Corridor_Battery "Batterij [%s %%]" <energy> (GF_Corridor) {zwave="37:command=battery"}
+
+// Sort of Scenes
+Number GF_All_lights	"Lampen woonkamer"	<light> (GF_Living,GF_Living_Lights)
+Switch GF_Light_switch_allowed "Lampensturing toegestaan" <light> (GF_Living,GF_Living_Lights)

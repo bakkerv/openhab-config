@@ -1,0 +1,33 @@
+sitemap demo label="Hoofdmenu"
+{
+	Frame {
+		Group item=gGF label="Begane grond" icon="groundfloor"
+		Group item=gFF label="Eerste verdieping" icon="firstfloor"
+	}
+	Frame label="Verlichting" icon="hue" {
+	      Group item=Lights label="Verlichting" icon="hue"
+   	      Selection item=GF_All_lights icon="hue" mappings=[ 0="Allen uit", 1="Allen aan" ]
+	}
+	Frame label="Klimaat" {
+		Text item=Weather_Temperature valuecolor=[Weather_LastUpdate=="Uninitialized"="lightgray",Weather_LastUpdate>90="lightgray",>25="orange",>15="green",>5="orange",<=5="blue"] {
+			Frame {
+				Text item=Weather_Humidity
+				Text item=Weather_Temperature_min valuecolor=[>24="orange",>15="green",>5="orange",<=5="blue"]
+				Text item=Weather_Temperature_max valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+				Text item=Weather_Clouds
+				Text item=Weather_LastUpdate visibility=[Weather_LastUpdate>30] valuecolor=[Weather_LastUpdate>120="orange", Weather_LastUpdate>300="red"]
+				Chart item=Weather_Temperature
+			}
+		}
+		Text item=GF_Living_Temperature  {
+			Chart item=GF_Living_Climate
+		}
+		Group item=Weather_astro label="Astro" icon="sun"
+	}
+	Frame label="Datum" {
+		Text item=Date
+	}
+	Frame {
+		Group item=XBMC_Living label="XBMC woonkamer" icon="video"
+	}
+}
