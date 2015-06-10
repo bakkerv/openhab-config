@@ -3,17 +3,21 @@ import org.openhab.core.persistence.*
 import org.openhab.model.script.actions.*
 import java.util.Date
 import org.joda.time.*
+import java.util.concurrent.locks.ReentrantLock
 
 
 //var Number counter = 1
 var Timer halBenedenTimer = null
 var Timer lightsLLTimer = null
+var java.util.concurrent.locks.ReentrantLock switchAllowedLock  = new java.util.concurrent.locks.ReentrantLock()
+
+
 
 rule "Someone in the corridor switches light for x minutes"
 when
 	Item GF_Corridor_Motion changed from CLOSED to OPEN
 then
-        var now = DateTime::now
+    var now = DateTime::now
 	var rise = Daylight_Start_Time.state as DateTimeType
 	var set = Daylight_End_Time.state as DateTimeType
 	var rise_dt =  new Instant(rise.calendar.timeInMillis)
@@ -51,11 +55,15 @@ when
 then
 	if ((GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0) && lightsLLTimer == null) {
 	   lightsLLTimer = createTimer(now.plusMinutes(10)) [
-		   lightsLLTimer = null
-		   sendCommand(GF_All_lights, 0)
-		   createTimer(now.plusMinutes(1)) [
-		   	sendCommand(GF_Light_switch_allowed, ON)
-		   ]
+			lightsLLTimer = null
+			sendCommand(GF_All_lights, 0)
+		  	try {
+		  		switchAllowedLock.lock()
+		   		sendCommand(GF_Light_switch_allowed, ON)
+		   	}
+		   	finally {
+		   		switchAllowedLock.unlock()
+		   	}
 		   pushNotification("light", "Ligh auto switched off after 10 minutes")
 	   ]
 	}
@@ -100,10 +108,12 @@ when
 	Item GF_Living_Lamp_Bank changed or
 	Item GF_Kitchen_Lamp changed
 then
-	sendCommand(GF_Light_switch_allowed, OFF)
-	createTimer(now.plusMinutes(30)) [
-		sendCommand(GF_Light_switch_allowed, ON)
-	]
+	if (!switchAllowedLock.isLocked()) {
+		sendCommand(GF_Light_switch_allowed, OFF)
+		createTimer(now.plusMinutes(30)) [
+			sendCommand(GF_Light_switch_allowed, ON)
+		]
+	}
 
 	/*
 	if (GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0) {
