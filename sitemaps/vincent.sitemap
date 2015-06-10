@@ -30,4 +30,8 @@ sitemap demo label="Hoofdmenu"
 	Frame {
 		Group item=XBMC_Living label="XBMC woonkamer" icon="video"
 	}
+
+	Frame {
+		Group item=Plugwise label="Plugwise pluggen"
+	}
 }

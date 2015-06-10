@@ -12,6 +12,8 @@ Group FF_Corridor	"Hal boven"	<corridor>  (gFF)
 
 Group GF_Living_Lights  "Lichten woonkamer"  <light-on> (GF_Living)
 
+Group Plugwise	"Plugwise pluggen" (All)
+
 Group XBMC_Living "XBMC" <video> (GF_Living)
 String XBMC_Living_State "Status [%s]"  <video> (XBMC_Living)  {xbmc="<[#livingRoom|Player.State]"}
 String XBMC_Living_Currently_Playing "Playing [%s]" <video> (XBMC_Living) {xbmc="<[#livingRoom|Player.Title]"}
@@ -67,3 +69,6 @@ Number GF_Corridor_Battery "Batterij [%s %%]" <energy> (GF_Corridor) {zwave="37:
 // Sort of Scenes
 Number GF_All_lights	"Lampen woonkamer"	<light> (GF_Living,GF_Living_Lights)
 Switch GF_Light_switch_allowed "Lampensturing toegestaan" <light> (GF_Living,GF_Living_Lights)
+
+
+Number FF_WashingMachine_Power "Vermogen wasmachine [%.2f W]"	(Plugwise) { http="<[http://192.168.6.34/core/domain_objects]:60000:XSLT(plugwise_stretch_wasmachine.xsl)]"}
