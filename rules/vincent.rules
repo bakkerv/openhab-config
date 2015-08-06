@@ -75,7 +75,7 @@ when
 	System started
 then
     sendCommand(GF_Light_switch_allowed, ON)
-    sendCommand(GF_Living_Last_Autoswitch, DateTime::now)
+    sendCommand(GF_Living_Last_Autoswitch, now)
 end
 
 rule "When motion sensor living room switches on or luminance value, stop off-timer and/or switch lights"
