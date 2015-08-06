@@ -62,7 +62,7 @@ then
 	if ((GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0) && lightsLLTimer == null) {
 	   lightsLLTimer = createTimer(now.plusMinutes(10)) [
 			lightsLLTimer = null
-			sendCommand(GF_Living_Last_Autoswitch, DateTime::now)
+			sendCommand(GF_Living_Last_Autoswitch, now)
 			sendCommand(GF_All_lights, 0)
 	  		sendCommand(GF_Light_switch_allowed, ON)
 		   pushNotification("light", "Ligh auto switched off after 10 minutes")
@@ -109,7 +109,6 @@ when
 	Item GF_Living_Lamp_Bank changed or
 	Item GF_Kitchen_Lamp changed
 then
-	var now = DateTime::now
 	var lastSwitch = GF_Living_Last_Autoswitch.state as DateTimeType
 	if (now.minus(10000).isAfter(lastSwitch)) {
 		sendCommand(GF_Light_switch_allowed, OFF)
