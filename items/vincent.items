@@ -62,7 +62,7 @@ Number GF_Living_Humidity "Luchtvochtigheid woonkamer [%.1f %%]" <temperature> (
 Number GF_Living_Luminance "Lichtsterkte woonkamer [%d lux]" <sun> (GF_Living) { zwave="36:command=sensor_multilevel,sensor_type=3"}
 Contact GF_Living_Motion "Aanwezigheid woonkamer [%d]" <sun> (GF_Living) { zwave="36:command=sensor_binary,respond_to_basic=true"}
 Number GF_Living_Battery "Batterij [%s %%]" <energy> (GF_Living) {zwave="36:command=battery"}
-DateTime GF_Living_Last_Autoswitch "Tijdstip laatste automatische schakeling [%1$tA, %1$td.%1$tm.%1$tY]" <calendar>
+DateTime GF_Living_Last_Autoswitch "Tijdstip laatste automatische schakeling [%1$tA, %1$td.%1$tm.%1$tY]" <calendar> (GF_Living, GF_Living_Lights, Lights)
 
 Contact GF_Corridor_Motion "Aanwezigheid hal [%d]" <sun> (GF_Corridor) { zwave="37:command=sensor_binary,respond_to_basic=true"}
 Number GF_Corridor_Battery "Batterij [%s %%]" <energy> (GF_Corridor) {zwave="37:command=battery"}
