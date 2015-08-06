@@ -3,13 +3,11 @@ import org.openhab.core.persistence.*
 import org.openhab.model.script.actions.*
 import java.util.Date
 import org.joda.time.*
-import java.util.concurrent.locks.ReentrantLock
 
 
 //var Number counter = 1
 var Timer halBenedenTimer = null
 var Timer lightsLLTimer = null
-var java.util.concurrent.locks.ReentrantLock switchAllowedLock  = new java.util.concurrent.locks.ReentrantLock()
 
 rule "Alarm rules"
 when
@@ -64,14 +62,9 @@ then
 	if ((GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0) && lightsLLTimer == null) {
 	   lightsLLTimer = createTimer(now.plusMinutes(10)) [
 			lightsLLTimer = null
+			sendCommand(GF_Living_Last_Autoswitch, DateTime::now)
 			sendCommand(GF_All_lights, 0)
-		  	try {
-		  		switchAllowedLock.lock()
-		   		sendCommand(GF_Light_switch_allowed, ON)
-		   	}
-		   	finally {
-		   		switchAllowedLock.unlock()
-		   	}
+	  		sendCommand(GF_Light_switch_allowed, ON)
 		   pushNotification("light", "Ligh auto switched off after 10 minutes")
 	   ]
 	}
@@ -81,7 +74,7 @@ rule "On startup, initialize some values"
 when
 	System started
 then
-        sendCommand(GF_Light_switch_allowed, ON)
+    sendCommand(GF_Light_switch_allowed, ON)
 end
 
 rule "When motion sensor living room switches on or luminance value, stop off-timer and/or switch lights"
@@ -95,28 +88,29 @@ then
 	}
 	var Number luminance = GF_Living_Luminance.state as DecimalType
 	var now = DateTime::now
-        var rise = Daylight_Start_Time.state as DateTimeType
-        var set = Daylight_End_Time.state as DateTimeType
-        var rise_dt =  new Instant(rise.calendar.timeInMillis)
-        var set_dt = new Instant(set.calendar.timeInMillis)
+    var rise = Daylight_Start_Time.state as DateTimeType
+    var set = Daylight_End_Time.state as DateTimeType
+    var rise_dt =  new Instant(rise.calendar.timeInMillis)
+    var set_dt = new Instant(set.calendar.timeInMillis)
 
 	if (luminance < 20 && GF_Living_Motion.state == OPEN && 
-	!(GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0)
-	 && GF_Light_switch_allowed.state == ON && (now.isBefore(rise_dt) || now.isAfter(set_dt))) {
-	     sendCommand(GF_All_lights, 1)
-             pushNotification("light", "Ligh auto switched on")
-
+		!(GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0)
+	 	&& GF_Light_switch_allowed.state == ON && (now.isBefore(rise_dt) || now.isAfter(set_dt))) {
+	    	sendCommand(GF_All_lights, 1)
+            pushNotification("light", "Ligh auto switched on")
 	}	     
 end
 
 
-rule "Living room light changed, update AllLights"
+rule "Living room light changed, set backoff timer"
 when
 	Item GF_Living_Lamp_TV changed or
 	Item GF_Living_Lamp_Bank changed or
 	Item GF_Kitchen_Lamp changed
 then
-	if (!switchAllowedLock.isLocked()) {
+	var now = DateTime::now
+	var lastSwitch = GF_Living_Last_Autoswitch.state as DateTimeType
+	if (now.minus(10000).isAfter(lastSwitch)) {
 		sendCommand(GF_Light_switch_allowed, OFF)
 		createTimer(now.plusMinutes(30)) [
 			sendCommand(GF_Light_switch_allowed, ON)
