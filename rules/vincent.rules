@@ -74,7 +74,7 @@ rule "On startup, initialize some values"
 when
 	System started
 then
-    sendCommand(GF_Light_switch_allowed, 1)
+    sendCommand(GF_Light_switch_allowed, ON)
     sendCommand(GF_Living_Last_Autoswitch, new DateTimeType())
 end
 
@@ -110,7 +110,7 @@ when
 	Item GF_Kitchen_Lamp changed
 then
 	var lastSwitch = GF_Living_Last_Autoswitch.state as DateTimeType
-	if (now.minus(10000).isAfter(lastSwitch)) {
+	if (now.minus(10000).isAfter(new Instant(lastSwitch.calendar.timeInMillis))) {
 		sendCommand(GF_Light_switch_allowed, OFF)
 		createTimer(now.plusMinutes(30)) [
 			sendCommand(GF_Light_switch_allowed, ON)
