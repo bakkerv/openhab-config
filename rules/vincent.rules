@@ -62,7 +62,7 @@ then
 	if ((GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0) && lightsLLTimer == null) {
 	   lightsLLTimer = createTimer(now.plusMinutes(10)) [
 			lightsLLTimer = null
-			sendCommand(GF_Living_Last_Autoswitch, now)
+			sendCommand(GF_Living_Last_Autoswitch, new DateTimeType())
 			sendCommand(GF_All_lights, 0)
 	  		sendCommand(GF_Light_switch_allowed, ON)
 		   pushNotification("light", "Ligh auto switched off after 10 minutes")
@@ -75,7 +75,7 @@ when
 	System started
 then
     sendCommand(GF_Light_switch_allowed, ON)
-    sendCommand(GF_Living_Last_Autoswitch, now)
+    sendCommand(GF_Living_Last_Autoswitch, new DateTimeType())
 end
 
 rule "When motion sensor living room switches on or luminance value, stop off-timer and/or switch lights"
