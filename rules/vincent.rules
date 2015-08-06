@@ -74,7 +74,7 @@ rule "On startup, initialize some values"
 when
 	System started
 then
-    sendCommand(GF_Light_switch_allowed, ON)
+    sendCommand(GF_Light_switch_allowed, 1)
     sendCommand(GF_Living_Last_Autoswitch, new DateTimeType())
 end
 
