@@ -11,7 +11,15 @@ var Timer halBenedenTimer = null
 var Timer lightsLLTimer = null
 var java.util.concurrent.locks.ReentrantLock switchAllowedLock  = new java.util.concurrent.locks.ReentrantLock()
 
-
+rule "Alarm rules"
+when
+	Item GF_Corridor_Motion changed from CLOSED to OPEN or
+	Item GF_Living_Motion changed from CLOSED to OPEN
+then
+	if (Alarm.state == ON) {
+		   pushNotification("Alarm", "Somebody is in the house!")
+	}
+end
 
 rule "Someone in the corridor switches light for x minutes"
 when

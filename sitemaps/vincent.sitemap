@@ -4,6 +4,14 @@ sitemap demo label="Hoofdmenu"
 		Group item=gGF label="Begane grond" icon="groundfloor"
 		Group item=gFF label="Eerste verdieping" icon="firstfloor"
 	}
+	Frame label="Aanwezigheidsensoren" {
+		Text item=GF_Living_Motion {
+			Chart item=GF_Living_Motion period=h
+		}
+		Text item=GF_Corridor_Motion {
+			Chart item=GF_Corridor_Motion period=h
+		}
+	}
 	Frame label="Verlichting" icon="hue" {
 	      Group item=Lights label="Verlichting" icon="hue"
    	      Selection item=GF_All_lights icon="hue" mappings=[ 0="Allen uit", 1="Allen aan" ]
@@ -24,14 +32,20 @@ sitemap demo label="Hoofdmenu"
 		}
 		Group item=Weather_astro label="Astro" icon="sun"
 	}
+	Frame label="Energieverbruik" {
+		Group item=Plugwise label="Plugwise pluggen" icon="socket" {
+			Text item=FF_WashingMachine_Power
+			Chart item=FF_WashingMachine_Power
+		}
+	}
 	Frame label="Datum" {
 		Text item=Date
 	}
 	Frame {
 		Group item=XBMC_Living label="XBMC woonkamer" icon="video"
 	}
-
 	Frame {
-		Group item=Plugwise label="Plugwise pluggen"
+		Switch item=Alarm label="Alarm"
 	}
+
 }

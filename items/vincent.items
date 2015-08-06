@@ -71,4 +71,5 @@ Number GF_All_lights	"Lampen woonkamer"	<light> (GF_Living,GF_Living_Lights)
 Switch GF_Light_switch_allowed "Lampensturing toegestaan" <light> (GF_Living,GF_Living_Lights)
 
 
-Number FF_WashingMachine_Power "Vermogen wasmachine [%.2f W]"	(Plugwise) { http="<[http://192.168.6.34/core/domain_objects:60000:XSLT(plugwise_stretch_wasmachine.xsl)]"}
+Number FF_WashingMachine_Power "Vermogen wasmachine [%.2f W]"	(Plugwise) { http="<[http://stretch:pggsvpxr@192.168.6.34/core/domain_objects:60000:XSLT(plugwise_stretch_wasmachine.xsl)]"}
+Switch Alarm "Alarm" (All)
