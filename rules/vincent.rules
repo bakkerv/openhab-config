@@ -82,6 +82,7 @@ rule "When motion sensor living room switches on or luminance value, stop off-ti
 when
 	Item GF_Living_Motion changed to OPEN or
 	Item GF_Living_Luminance changed or
+	Item GF_Light_switch_allowed changed to ON
 then
 	if (GF_Living_Motion.state == OPEN && lightsLLTimer != null) {
 	   lightsLLTimer.cancel()
@@ -97,7 +98,8 @@ then
 	if (luminance < 20 && GF_Living_Motion.state == OPEN && 
 		!(GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0)
 	 	&& GF_Light_switch_allowed.state == ON && (now.isBefore(rise_dt) || now.isAfter(set_dt))) {
-	    	sendCommand(GF_All_lights, 1)
+  	    sendCommand(GF_Living_Last_Autoswitch, new DateTimeType())
+	    sendCommand(GF_All_lights, 1)
             pushNotification("light", "Ligh auto switched on")
 	}	     
 end
