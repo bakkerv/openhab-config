@@ -55,7 +55,7 @@ DateTime		Date			"Datum [%1$tA, %1$td.%1$tm.%1$tY]"	<calendar>	{ ntp="Europe/Ams
 Dimmer GF_Living_Lamp_TV "Lamp TV [%d %%]"	<light> (GF_Living, GF_Living_Lights, Lights) {zwave="3"}
 Dimmer GF_Living_Lamp_Bank "Lamp Bank [%d %%]"	<light> (GF_Living, GF_Living_Lights, Lights) {zwave="27"}
 Switch GF_Corridor_Lamp "Lamp Hal beneden"	<light> (GF_Corridor, Lights) {zwave="30"}
-Switch FF_Corridor_Lamp "Lamp Hal boven"	<light> (FF_Corridor, Lights) {zwave="34"}
+Switch FF_Corridor_Lamp "Lamp Hal boven"	<light> (FF_Corridor, Lights) {zwave="41"}
 Dimmer GF_Kitchen_Lamp "Lamp keuken [%d %%]"	<light> (GF_Kitchen, GF_Living_Lights, Lights) {zwave="35:refresh_interval=15"}
 Number GF_Living_Temperature "Temperatuur woonkamer [%.1f °C]" <temperature> (GF_Living,GF_Living_Climate) { zwave="36:command=sensor_multilevel,sensor_type=1"}
 Number GF_Living_Humidity "Luchtvochtigheid woonkamer [%.1f %%]" <temperature> (GF_Living,GF_Living_Climate) { zwave="36:command=sensor_multilevel,sensor_type=5"}
