@@ -102,12 +102,12 @@ then
 	    sendCommand(GF_All_lights, 1)
 		pushNotification("light", "Ligh auto switched on")
 	}
-	if (luminance >= 30 &&
+	if ( (luminance >= 70 || now.isAfter(rise_dt) || now.isBefore(set_dt) )&&
 		(GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0) &&
 		GF_Light_switch_allowed.state == ON	) {
 		sendCommand(GF_Living_Last_Autoswitch, new DateTimeType())
 	    sendCommand(GF_All_lights, 0)
-		pushNotification("light", "Ligh auto switched off, there is enough light")
+		pushNotification("light", "Ligh auto switched off, there is/should be enough light")
 	}
 end
 
