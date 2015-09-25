@@ -33,10 +33,7 @@ sitemap demo label="Hoofdmenu"
 		Group item=Weather_astro label="Astro" icon="sun"
 	}
 	Frame label="Energieverbruik" {
-		Group item=Plugwise label="Plugwise pluggen" icon="socket" {
-			Text item=FF_WashingMachine_Power
-			Chart item=FF_WashingMachine_Power
-		}
+		Group item=Plugwise label="Plugwise pluggen" icon="socket" 
 	}
 	Frame label="Datum" {
 		Text item=Date
