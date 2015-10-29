@@ -19,7 +19,7 @@ then
 	}
 end
 
-rule "Someone in the corridor switches light for x minutes"
+rule "Someone in the corridor switches light"
 when
 	Item GF_Corridor_Motion changed from CLOSED to OPEN
 then
@@ -30,10 +30,17 @@ then
 	var set_dt = new Instant(set.calendar.timeInMillis)
 	if ( now.isBefore(rise_dt) || now.isAfter(set_dt) ) {
 		sendCommand(GF_Corridor_Lamp, ON)
-        	createTimer(now.plusMinutes(3)) [|
-        		sendCommand(GF_Corridor_Lamp, OFF)
-            	]
+        	//createTimer(now.plusMinutes(3)) [|
+        	//	sendCommand(GF_Corridor_Lamp, OFF)
+            	//]
 	}
+end
+
+rule "Corridor switches off when nobody present"
+when
+	Item GF_Corridor_Motion changed from OPEN to CLOSED
+then
+	sendCommand(GF_Corridor_Lamp, OFF)
 end
 
 

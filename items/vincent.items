@@ -13,6 +13,7 @@ Group FF_Corridor	"Hal boven"	<corridor>  (gFF)
 Group GF_Living_Lights  "Lichten woonkamer"  <light-on> (GF_Living)
 
 Group Plugwise	"Plugwise pluggen" (All)
+Group PlugwiseNotifications	"Plugwise notificaties" (All)
 
 Group XBMC_Living "XBMC" <video> (GF_Living)
 String XBMC_Living_State "Status [%s]"  <video> (XBMC_Living)  {xbmc="<[#livingRoom|Player.State]"}
@@ -71,28 +72,50 @@ Number GF_Corridor_Battery "Batterij [%s %%]" <energy> (GF_Corridor) {zwave="37:
 Number GF_All_lights	"Lampen woonkamer"	<light> (GF_Living,GF_Living_Lights)
 Switch GF_Light_switch_allowed "Lampensturing toegestaan" <light> (GF_Living,GF_Living_Lights, Lights)
 
-Number FF_Babyphone_Power    "Verbruik Babyfoon [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035585EF:state:default]"  }
-Number SF_CV_Power           "Verbruik CV [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F000356293D:state:default]"  }
-Number FF_Droger_Power       "Verbruik Droger [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003562B4C:state:default]"  }
-Number GF_Nespresso_Power    "Verbruik Nespresso [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00036BC2F6:state:default]"  }
-Number GF_Magnetron_Power    "Verbruik Magnetron [%.2f W]" <socket>  (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035628E4:state:default]"  }
-Number GF_Oven_Power         "Verbruik Oven [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0004465734:state:default]"  }
-Number GF_Stretch_Power      "Verbruik Stretch [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0004554584:state:default]"  }
-Number GF_Samsung_decoder_Power "Verbruik Samsung Decoder [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035628DF:state:default]"  }
-Number GF_TV_Hoek_Power      "Verbruik TV Hoek [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035585DC:state:default]"  }
-Number GF_TV_Power           "Verbruik TV [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00036BC301:state:default]"  }
-Number GF_Vaatwasser_Power   "Verbruik Vaatwasser [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003B9C434:state:default]"  }
-Number B_Vriezer_Power       "Verbruik Vriezer [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003539D65:state:default]"  }
-Number GF_Versterker_Power   "Verbruik Versterker [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00036BB118:state:default]"  }
-Number GF_Waterkoker_Power   "Verbruik Waterkoker [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003539D9C:state:default]"  }
-Number FF_WashingMachine_Power_MQTT "Verbruik Wasmachine [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035628C1:state:default]" }
-Number GF_WCD_Woonkamer_haldeur_Power "Verbruik WCD Woonkamer haldeur [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00036BC540:state:default]"  }
-Number GF_Woonkamer_achter_Power "Verbruik WCD Woonkamer achter [%.2f W]" <socket>  (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003539DE1:state:default]"  }
-Number FF_WCD_Hal_Power      "Verbruik WCD Hal 1e verdieping [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00036BC2D3:state:default]"  }
-Number FF_WCD_slaapkamer_Power "Verbruik WCD Slaapkamer Vincent [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003B9C446:state:default]"  }
-Number GF_WCD_WK_Lamp_Power    "Verbruik WCD woonkamer lamp [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003B9C40B:state:default]"  }
-Number SF_WCD_Zolder_Power   "Verbruik WCD Zolder [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035628DE:state:default]"  }
+Number FF_Babyphone_Power    "Verbruik Babyfoon [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035585EF/power:state:default]"  }
+Number SF_CV_Power           "Verbruik CV [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F000356293D/power:state:default]"  }
+Number FF_Droger_Power       "Verbruik Droger [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003562B4C/power:state:default]"  }
+Number GF_Nespresso_Power    "Verbruik Nespresso [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00036BC2F6/power:state:default]"  }
+Number GF_Magnetron_Power    "Verbruik Magnetron [%.2f W]" <socket>  (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035628E4/power:state:default]"  }
+Number GF_Oven_Power         "Verbruik Oven [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0004465734/power:state:default]"  }
+Number GF_Stretch_Power      "Verbruik Stretch [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0004554584/power:state:default]"  }
+Number GF_Samsung_decoder_Power "Verbruik Samsung Decoder [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035628DF/power:state:default]"  }
+Number GF_TV_Hoek_Power      "Verbruik TV Hoek [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035585DC/power:state:default]"  }
+Number GF_TV_Power           "Verbruik TV [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00036BC301/power:state:default]"  }
+Number GF_Vaatwasser_Power   "Verbruik Vaatwasser [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003B9C434/power:state:default]"  }
+Number B_Vriezer_Power       "Verbruik Vriezer [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003539D65/power:state:default]"  }
+Number GF_Versterker_Power   "Verbruik Versterker [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00036BB118/power:state:default]"  }
+Number GF_Waterkoker_Power   "Verbruik Waterkoker [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003539D9C/power:state:default]"  }
+Number FF_WashingMachine_Power_MQTT "Verbruik Wasmachine [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035628C1/power:state:default]" }
+Number GF_WCD_Woonkamer_haldeur_Power "Verbruik WCD Woonkamer haldeur [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00036BC540/power:state:default]"  }
+Number GF_Woonkamer_achter_Power "Verbruik WCD Woonkamer achter [%.2f W]" <socket>  (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003539DE1/power:state:default]"  }
+Number FF_WCD_Hal_Power      "Verbruik WCD Hal 1e verdieping [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00036BC2D3/power:state:default]"  }
+Number FF_WCD_slaapkamer_Power "Verbruik WCD Slaapkamer Vincent [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003B9C446/power:state:default]"  }
+Number GF_WCD_WK_Lamp_Power    "Verbruik WCD woonkamer lamp [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F0003B9C40B/power:state:default]"  }
+Number SF_WCD_Zolder_Power   "Verbruik WCD Zolder [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035628DE/power:state:default]"  }
 String Plugwise_last_updated     "Laatste update [%s]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/last_updated:state:default]"  }
+
+Switch FF_Babyphone_Notification    "Notificatie Babyfoon" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00035585EF/notification:command:*:${command} Babyfoon]"  }
+Switch SF_CV_Notification           "Notificatie CV" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F000356293D/notification:command:*:${command} CV]"  }
+Switch FF_Droger_Notification       "Notificatie Droger" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F0003562B4C/notification:command:*:${command} Droger]"  }
+Switch GF_Nespresso_Notification    "Notificatie Nespresso" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00036BC2F6/notification:command:*:${command} Nespresso]"  }
+Switch GF_Magnetron_Notification    "Notificatie Magnetron" <socket>  (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00035628E4/notification:command:*:${command} Magnetron]"  }
+Switch GF_Oven_Notification         "Notificatie Oven" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F0004465734/notification:command:*:${command} Oven]"  }
+Switch GF_Stretch_Notification      "Notificatie Stretch" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F0004554584/notification:command:*:${command} Stretch]"  }
+Switch GF_Samsung_decoder_Notification "Notificatie Samsung Decoder" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00035628DF/notification:command:*:${command} Decoder]"  }
+Switch GF_TV_Hoek_Notification      "Notificatie TV Hoek" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00035585DC/notification:command:*:${command} TV Hoek]"  }
+Switch GF_TV_Notification           "Notificatie TV" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00036BC301/notification:command:*:${command} TV]"  }
+Switch GF_Vaatwasser_Notification   "Notificatie Vaatwasser " <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F0003B9C434/notification:command:*:${command} Vaatwasser]"  }
+Switch B_Vriezer_Notification       "Notificatie Vriezer" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F0003539D65/notification:command:*:${command} Vriezer]"  }
+Switch GF_Versterker_Notification   "Notificatie Versterker" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00036BB118/notification:command:*:${command} Versterker]"  }
+Switch GF_Waterkoker_Notification   "Notificatie Waterkoker" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F0003539D9C/notification:command:*:${command} Waterkoker]"  }
+Switch FF_WashingMachine_Notification_MQTT "Notificatie Wasmachine" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00035628C1/notification:command:*:${command} Wasmachine]" }
+Switch GF_WCD_Woonkamer_haldeur_Notification "Notificatie WCD Woonkamer haldeur" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00036BC540/notification:command:*:${command} WCD Woonkamer haldeur]"  }
+Switch GF_Woonkamer_achter_Notification "Notificatie WCD Woonkamer achter" <socket>  (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F0003539DE1/notification:command:*:${command} WCD Woonkamer achter]"  }
+Switch FF_WCD_Hal_Notification      "Notificatie WCD Hal 1e verdieping" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00036BC2D3/notification:command:*:${command} WCD Hal]"  }
+Switch FF_WCD_slaapkamer_Notification "Notificatie WCD Slaapkamer Vincent" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F0003B9C446/notification:command:*:${command} WCD Slaapkamer]"  }
+Switch GF_WCD_WK_Lamp_Notification    "Notificatie WCD woonkamer lamp" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F0003B9C40B/notification:command:*:${command} WCD WK Lamp]"  }
+Switch SF_WCD_Zolder_Notification   "Notificatie WCD Zolder" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00035628DE/notification:command:*:${command} WCD Zolder]"  }
 
 Switch Alarm "Alarm" (All)
 

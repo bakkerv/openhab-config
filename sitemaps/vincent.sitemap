@@ -34,6 +34,7 @@ sitemap demo label="Hoofdmenu"
 	}
 	Frame label="Energieverbruik" {
 		Group item=Plugwise label="Plugwise pluggen" icon="socket" 
+		Group item=PlugwiseNotifications label="Plugwise notificaties" icon="socket" 
 	}
 	Frame label="Datum" {
 		Text item=Date
