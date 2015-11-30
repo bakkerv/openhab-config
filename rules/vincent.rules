@@ -6,8 +6,6 @@ import org.joda.time.*
 
 
 //var Number counter = 1
-var Timer halBenedenTimer = null
-var Timer lightsLLTimer = null
 
 rule "Alarm rules"
 when
@@ -62,20 +60,19 @@ then
 	sendCommand(GF_Kitchen_Lamp, 0)
 end
 
-rule "When someone left living room, switch off after 10 minutes"
+/**
+rule "When someone left living room, switch off"
 when
 	Item GF_Living_Motion changed to CLOSED
 then
-	if ((GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0) && lightsLLTimer == null) {
-	   lightsLLTimer = createTimer(now.plusMinutes(10)) [
-			lightsLLTimer = null
-			sendCommand(GF_Living_Last_Autoswitch, new DateTimeType())
-			sendCommand(GF_All_lights, 0)
-	  		sendCommand(GF_Light_switch_allowed, ON)
-		   pushNotification("light", "Ligh auto switched off after 10 minutes")
-	   ]
+	if (GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0) {
+	   sendCommand(GF_Living_Last_Autoswitch, new DateTimeType())
+	   sendCommand(GF_All_lights, 0)
+	   sendCommand(GF_Light_switch_allowed, ON)
+	   pushNotification("light", "Ligh auto switched off after 10 minutes")
 	}
 end
+*/
 
 rule "On startup, initialize some values"
 when
@@ -85,39 +82,38 @@ then
     sendCommand(GF_Living_Last_Autoswitch, new DateTimeType())
 end
 
-rule "When motion sensor living room switches on or luminance value, stop off-timer and/or switch lights"
+/**
+rule "When motion sensor living room switches on or luminance value,  switch lights"
 when
 	Item GF_Living_Motion changed to OPEN or
 	Item GF_Living_Luminance changed or
+	Item Daylight_Start_Event changed or
+	Item Daylight_End_Event changed or
 	Item GF_Light_switch_allowed changed to ON
 then
-	if (GF_Living_Motion.state == OPEN && lightsLLTimer != null) {
-	   lightsLLTimer.cancel()
-	   lightsLLTimer = null
-	}
 	var Number luminance = GF_Living_Luminance.state as DecimalType
 	var now = DateTime::now
-    var rise = Daylight_Start_Time.state as DateTimeType
-    var set = Daylight_End_Time.state as DateTimeType
-    var rise_dt =  new Instant(rise.calendar.timeInMillis)
-    var set_dt = new Instant(set.calendar.timeInMillis)
+	var rise = Daylight_Start_Time.state as DateTimeType
+	var set = Daylight_End_Time.state as DateTimeType
+	var rise_dt =  new Instant(rise.calendar.timeInMillis)
+	var set_dt = new Instant(set.calendar.timeInMillis)
 
-	if (luminance < 20 && GF_Living_Motion.state == OPEN && 
+	if (luminance < 30 && GF_Living_Motion.state == OPEN && 
 		!(GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0)
-	 	&& GF_Light_switch_allowed.state == ON && (now.isBefore(rise_dt) || now.isAfter(set_dt))) {
-  	    sendCommand(GF_Living_Last_Autoswitch, new DateTimeType())
-	    sendCommand(GF_All_lights, 1)
+	 	&& GF_Light_switch_allowed.state == ON ) { //&& (now.isBefore(rise_dt) || now.isAfter(set_dt))) {
+		sendCommand(GF_Living_Last_Autoswitch, new DateTimeType())
+		sendCommand(GF_All_lights, 1)
 		pushNotification("light", "Ligh auto switched on")
 	}
-	if ( (luminance >= 70 || now.isAfter(rise_dt) && now.isBefore(set_dt) )&&
+	if ( (luminance >= 100 || now.isAfter(rise_dt) && now.isBefore(set_dt) )&&
 		(GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0) &&
 		GF_Light_switch_allowed.state == ON	) {
 		sendCommand(GF_Living_Last_Autoswitch, new DateTimeType())
-	    sendCommand(GF_All_lights, 0)
+		sendCommand(GF_All_lights, 0)
 		pushNotification("light", "Ligh auto switched off, there is/should be enough light")
 	}
 end
-
+*/
 
 rule "Living room light changed, set backoff timer"
 when

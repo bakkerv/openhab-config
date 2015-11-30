@@ -33,11 +33,14 @@ DateTime		Time			"Tijd [%1$tT]" <calendar> (Weather_astro)		{ ntp="Europe/Amster
 DateTime Sunrise_Time  "Zonsopgang [%1$tH:%1$tM]" <sun> (Weather_astro) {astro="planet=sun, type=rise, property=start"}
 DateTime Daylight_Start_Time  "Daglicht start [%1$tH:%1$tM]" <sun> (Weather_astro) {astro="planet=sun, type=daylight, property=start, offset=-10"}
 DateTime Daylight_End_Time  "Daglicht eind [%1$tH:%1$tM]" <moon> (Weather_astro) {astro="planet=sun, type=daylight, property=end,offset=-10"}
-// schedules a event which starts 15 minutes BEFORE sunrise
-Switch Sunrise_Event {astro="planet=sun, type=rise, property=start, offset=-15"}
+// schedules a event which starts 10 minutes BEFORE sunrise
+Switch Sunrise_Event (Weather_astro) {astro="planet=sun, type=rise, property=start, offset=-10"}
+Switch Daylight_Start_Event (Weather_astro) {astro="planet=sun, type=daylight, property=start, offset=-10"}
+Switch Daylight_End_Event (Weather_astro) {astro="planet=sun, type=daylight, property=end, offset=-10"}
 
 // schedules a event which starts 15 minutes BEFORE sunrise
 Switch Sunset_Event  {astro="planet=sun, type=rise, property=end, offset=-15"}
+Switch IsDark (Weather_astro) {}
 
 // shows the sunset
 DateTime Sunset_Time   "Zonsondergang [%1$tH:%1$tM]" <moon> (Weather_astro)  {astro="planet=sun, type=set, property=end"}
@@ -118,4 +121,5 @@ Switch GF_WCD_WK_Lamp_Notification    "Notificatie WCD woonkamer lamp" <socket> 
 Switch SF_WCD_Zolder_Notification   "Notificatie WCD Zolder" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00035628DE/notification:command:*:${command} WCD Zolder]"  }
 
 Switch Alarm "Alarm" (All)
+
 
