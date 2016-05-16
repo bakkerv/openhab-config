@@ -1,14 +1,16 @@
 Group All
-Group gGF 		(All)
-Group gFF 		(All)
-Group Weather		(All)
-Group Lights    "Verlichting"  (All)
-Group GF_Living 	"Woonkamer" 	<video> 	(gGF)
-Group GF_Living_Climate "Klimaat woonkamer" <temperature> (GF_Living)
-Group GF_Kitchen 	"Keuken" 	<kitchen> 	(gGF)
-Group GF_Corridor 	"Hal beneden"   <corridor> 	(gGF)
+Group gGF 		<groundfloor> (All)
+Group gFF 		<firstfloor> (All)
+Group Weather		<weather> (All)
+Group Lights            "Verlichting"
+Group GF_Living         "Woonkamer" <groundfloor> (All,gGF)
+Group Batteries         "Batterijniveau's" <energy> (All)
 
+Group GF_WC     	"WC beneden"    <corridor> 	(gGF)
+
+Group GF_Corridor	"Hal beneden"	<corridor>  (gGF)
 Group FF_Corridor	"Hal boven"	<corridor>  (gFF)
+Group FF_Bedroom_VE	"Slaapkamer Vincent & Ellen"	<bedroom>  (gFF)
 
 Group GF_Living_Lights  "Lichten woonkamer"  <light-on> (GF_Living)
 
@@ -16,6 +18,7 @@ Group Plugwise	"Plugwise pluggen" (All)
 Group PlugwiseNotifications	"Plugwise notificaties" (All)
 
 Group XBMC_Living "XBMC" <video> (GF_Living)
+
 String XBMC_Living_State "Status [%s]"  <video> (XBMC_Living)  {xbmc="<[#livingRoom|Player.State]"}
 String XBMC_Living_Currently_Playing "Playing [%s]" <video> (XBMC_Living) {xbmc="<[#livingRoom|Player.Title]"}
 
@@ -31,8 +34,8 @@ Group Weather_astro (Weather)
 // shows the sunrise
 DateTime		Time			"Tijd [%1$tT]" <calendar> (Weather_astro)		{ ntp="Europe/Amsterdam:nl_NL" }
 DateTime Sunrise_Time  "Zonsopgang [%1$tH:%1$tM]" <sun> (Weather_astro) {astro="planet=sun, type=rise, property=start"}
-DateTime Daylight_Start_Time  "Daglicht start [%1$tH:%1$tM]" <sun> (Weather_astro) {astro="planet=sun, type=daylight, property=start, offset=-10"}
-DateTime Daylight_End_Time  "Daglicht eind [%1$tH:%1$tM]" <moon> (Weather_astro) {astro="planet=sun, type=daylight, property=end,offset=-10"}
+DateTime Daylight_Start_Time  "Daglicht start [%1$tH:%1$tM]" <sun> (Weather_astro) {astro="planet=sun, type=daylight, property=start, offset=-30"}
+DateTime Daylight_End_Time  "Daglicht eind [%1$tH:%1$tM]" <moon> (Weather_astro) {astro="planet=sun, type=daylight, property=end,offset=-30"}
 // schedules a event which starts 10 minutes BEFORE sunrise
 Switch Sunrise_Event (Weather_astro) {astro="planet=sun, type=rise, property=start, offset=-10"}
 Switch Daylight_Start_Event (Weather_astro) {astro="planet=sun, type=daylight, property=start, offset=-10"}
@@ -56,24 +59,32 @@ Number   Elevation      "Elevation [%.2f]" (Weather_astro)  {astro="planet=sun, 
 DateTime		Date			"Datum [%1$tA, %1$td.%1$tm.%1$tY]"	<calendar>	{ ntp="Europe/Amsterdam:nl_NL" }
 
 // All z-wave items
-Dimmer GF_Living_Lamp_TV "Lamp TV [%d %%]"	<light> (GF_Living, GF_Living_Lights, Lights) {zwave="3"}
-Dimmer GF_Living_Lamp_Bank "Lamp Bank [%d %%]"	<light> (GF_Living, GF_Living_Lights, Lights) {zwave="27"}
-Switch GF_Corridor_Lamp "Lamp Hal beneden"	<light> (GF_Corridor, Lights) {zwave="30"}
-Switch FF_Corridor_Lamp "Lamp Hal boven"	<light> (FF_Corridor, Lights) {zwave="41"}
-Dimmer GF_Kitchen_Lamp "Lamp keuken [%d %%]"	<light> (GF_Kitchen, GF_Living_Lights, Lights) {zwave="35:refresh_interval=15"}
-Number GF_Living_Temperature "Temperatuur woonkamer [%.1f °C]" <temperature> (GF_Living,GF_Living_Climate) { zwave="36:command=sensor_multilevel,sensor_type=1"}
-Number GF_Living_Humidity "Luchtvochtigheid woonkamer [%.1f %%]" <temperature> (GF_Living,GF_Living_Climate) { zwave="36:command=sensor_multilevel,sensor_type=5"}
-Number GF_Living_Luminance "Lichtsterkte woonkamer [%d lux]" <sun> (GF_Living) { zwave="36:command=sensor_multilevel,sensor_type=3"}
-Contact GF_Living_Motion "Aanwezigheid woonkamer [%d]" <sun> (GF_Living) { zwave="36:command=sensor_binary,respond_to_basic=true"}
-Number GF_Living_Battery "Batterij [%s %%]" <energy> (GF_Living) {zwave="36:command=battery"}
-DateTime GF_Living_Last_Autoswitch "Tijdstip laatste automatische schakeling [%1$tA, %1$td.%1$tm.%1$tY %1$tH:%1$tM:%1$tS]" <calendar> (GF_Living, GF_Living_Lights, Lights)
+Dimmer GF_Living_Lamp_TV		"Lamp TV [%d %%]"			<light> (GF_Living, GF_Living_Lights, Lights) {zwave="3"}
+Dimmer GF_Living_Lamp_Bank 		"Lamp Bank [%d %%]"			<light> (GF_Living, GF_Living_Lights, Lights) {zwave="27"}
+Dimmer GF_Living_Lamp_Table 		"Lamp boven tafel [%d %%]"		<light> (GF_Living, GF_Living_Lights, Lights) {zwave="60:command=switch_multilevel"}
+Number GF_Living_Lamp_Table_energy      "Verbruik Lamp boven tafel [%.1f ]"     <light> (GF_Living, GF_Living_Lights, Lights) {zwave="60:command=meter,meter_scale=E_KWh"}
+Number GF_Living_Lamp_Table_power	"Vermogen Lamp boven tafel [%.1f ]"	<light> (GF_Living, GF_Living_Lights, Lights) {zwave="60:command=meter,meter_scale=E_W"}
+Switch GF_Corridor_Lamp 		"Lamp Hal beneden"			<light> (GF_Corridor, Lights) {zwave="30"}
+Switch FF_Corridor_Lamp 		"Lamp Hal boven"			<light> (FF_Corridor, Lights) {zwave="41"}
+Switch GF_WC_Lamp 			"Lamp WC"				<light> (GF_WC, Lights) {zwave="50"}
+Dimmer GF_Kitchen_Lamp 			"Lamp keuken [%d %%]"			<light> (GF_Kitchen, GF_Living_Lights, Lights) {zwave="54:refresh_interval=15"}
+Number GF_Living_Temperature 		"Temperatuur woonkamer [%.1f °C]" 	<temperature> (GF_Living,GF_Living_Climate) { zwave="58:command=sensor_multilevel,sensor_type=1"}
+//Number GF_Living_Humidity 		"Luchtvochtigheid woonkamer [%.1f %%]" 	<temperature> (GF_Living,GF_Living_Climate) { zwave="58:command=sensor_multilevel,sensor_type=5"}
+Number GF_Living_Luminance 		"Lichtsterkte woonkamer [%d lux]" 	<sun> (GF_Living) { zwave="58:command=sensor_multilevel,sensor_type=3"}
+Contact GF_Living_Motion 		"Aanwezigheid woonkamer [%d]" 		<present> (GF_Living) { zwave="58:command=sensor_binary,sensor_type=12,respond_to_basic=true"}
+Contact GF_WC_Motion 			"Aanwezigheid WC [%d]" 			<present> (GF_WC) { zwave="36:command=sensor_binary,respond_to_basic=true"}
+Number GF_WC_Battery 			"Batterij WC [%s %%]" 			<energy> (Batteries,GF_WC) {zwave="36:command=battery"}
+Number GF_Living_Battery 		"Batterij Woonkamer [%s %%]" 		<energy> (GF_Living,Batteries) {zwave="58:command=battery"}
+DateTime GF_Living_Last_Autoswitch 	"Tijdstip laatste automatische schakeling [%1$tA, %1$td.%1$tm.%1$tY %1$tH:%1$tM:%1$tS]" <calendar> (GF_Living, GF_Living_Lights, Lights)
 
-Contact GF_Corridor_Motion "Aanwezigheid hal [%d]" <sun> (GF_Corridor) { zwave="37:command=sensor_binary,respond_to_basic=true"}
-Number GF_Corridor_Battery "Batterij [%s %%]" <energy> (GF_Corridor) {zwave="37:command=battery"}
+Contact GF_Corridor_Motion 		"Aanwezigheid hal [%d]"        		<present> (GF_Corridor) { zwave="37:command=sensor_binary,respond_to_basic=true"}
+Number GF_Corridor_Battery 		"Batterij Hal beneden[%s %%]" 			<energy> (GF_Corridor,Batteries) {zwave="37:command=battery"}
+
+Number FF_BedroomVE_Heating             "Verwarming slaapkamer V&E [%.1f ℃]" <temperature> (FF_Bedroom_VE) {zwave="45:command=thermostat_setpoint"}
+Number FF_BedroomVE_Heating_Battery	"Batterij Verwarming slaapkamer V&E [%d %%]" <energy> (Batteries,FF_Bedroom_VE) {zwave="45:command=battery"}
 
 // Sort of Scenes
-Number GF_All_lights	"Lampen woonkamer"	<light> (GF_Living,GF_Living_Lights)
-Switch GF_Light_switch_allowed "Lampensturing toegestaan" <light> (GF_Living,GF_Living_Lights, Lights)
+Number GF_All_lights	"Lampen woonkamer"	<light> (GF_Living,GF_Living_Lights, Lights)
 
 Number FF_Babyphone_Power    "Verbruik Babyfoon [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F00035585EF/power:state:default]"  }
 Number SF_CV_Power           "Verbruik CV [%.2f W]" <socket> (Plugwise) { mqtt="<[localbroker:plugwiseplugs/000D6F000356293D/power:state:default]"  }
@@ -121,5 +132,3 @@ Switch GF_WCD_WK_Lamp_Notification    "Notificatie WCD woonkamer lamp" <socket> 
 Switch SF_WCD_Zolder_Notification   "Notificatie WCD Zolder" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00035628DE/notification:command:*:${command} WCD Zolder]"  }
 
 Switch Alarm "Alarm" (All)
-
-

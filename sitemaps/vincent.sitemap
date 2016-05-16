@@ -11,6 +11,9 @@ sitemap demo label="Hoofdmenu"
 		Text item=GF_Corridor_Motion {
 			Chart item=GF_Corridor_Motion period=h
 		}
+		Text item=GF_WC_Motion {
+			Chart item=GF_WC_Motion period=h
+		}
 	}
 	Frame label="Verlichting" icon="hue" {
 	      Group item=Lights label="Verlichting" icon="hue"
@@ -45,5 +48,8 @@ sitemap demo label="Hoofdmenu"
 	Frame {
 		Switch item=Alarm label="Alarm"
 	}
+        Frame {
+                Group item=Batteries label="Batterijniveau's" icon="energy"
+        }
 
 }
