@@ -11,6 +11,7 @@ Items {
 	
 	// let's only store temperature values in rrd
 	Weather* : strategy = everyHour, restoreOnStartup
-	GF_Living_Humidity,GF_Living_Luminance,GF_Living_Motion,GF_Living_Battery,GF_Corridor_Motion,GF_Corridor_Battery : strategy = everyChange, everyMinute, restoreOnStartup
-	*  : strategy = everyChange, everyMinute
+	//GF_Living_Humidity,GF_Living_Luminance,GF_Living_Motion,GF_Living_Battery,GF_Corridor_Motion,GF_Corridor_Battery : strategy = everyChange, everyMinute, restoreOnStartup
+        GF_Living_Last_Autoswitch : strategy = everyChange, restoreOnStartup
+	*  : strategy = everyChange
 }

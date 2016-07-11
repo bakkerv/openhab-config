@@ -63,7 +63,7 @@ Dimmer GF_Living_Lamp_TV		"Lamp TV [%d %%]"			<light> (GF_Living, GF_Living_Ligh
 Dimmer GF_Living_Lamp_Bank 		"Lamp Bank [%d %%]"			<light> (GF_Living, GF_Living_Lights, Lights) {zwave="27"}
 Dimmer GF_Living_Lamp_Table 		"Lamp boven tafel [%d %%]"		<light> (GF_Living, GF_Living_Lights, Lights) {zwave="60:command=switch_multilevel"}
 Number GF_Living_Lamp_Table_energy      "Verbruik Lamp boven tafel [%.1f ]"     <light> (GF_Living, GF_Living_Lights, Lights) {zwave="60:command=meter,meter_scale=E_KWh"}
-Number GF_Living_Lamp_Table_power	"Vermogen Lamp boven tafel [%.1f ]"	<light> (GF_Living, GF_Living_Lights, Lights) {zwave="60:command=meter,meter_scale=E_W"}
+Number GF_Living_Lamp_Table_power	"Vermogen Lamp boven tafel [%.1f W]"	<light> (GF_Living, GF_Living_Lights, Lights) {zwave="60:command=meter,meter_scale=E_W"}
 Switch GF_Corridor_Lamp 		"Lamp Hal beneden"			<light> (GF_Corridor, Lights) {zwave="30"}
 Switch FF_Corridor_Lamp 		"Lamp Hal boven"			<light> (FF_Corridor, Lights) {zwave="41"}
 Switch GF_WC_Lamp 			"Lamp WC"				<light> (GF_WC, Lights) {zwave="50"}
@@ -80,8 +80,8 @@ DateTime GF_Living_Last_Autoswitch 	"Tijdstip laatste automatische schakeling [%
 Contact GF_Corridor_Motion 		"Aanwezigheid hal [%d]"        		<present> (GF_Corridor) { zwave="37:command=sensor_binary,respond_to_basic=true"}
 Number GF_Corridor_Battery 		"Batterij Hal beneden[%s %%]" 			<energy> (GF_Corridor,Batteries) {zwave="37:command=battery"}
 
-Number FF_BedroomVE_Heating             "Verwarming slaapkamer V&E [%.1f ℃]" <temperature> (FF_Bedroom_VE) {zwave="45:command=thermostat_setpoint"}
-Number FF_BedroomVE_Heating_Battery	"Batterij Verwarming slaapkamer V&E [%d %%]" <energy> (Batteries,FF_Bedroom_VE) {zwave="45:command=battery"}
+Number FF_BedroomVE_Heating             "Verwarming slaapkamer V&E [%.1f ℃]" <temperature> (FF_Bedroom_VE, gFF) {zwave="45:command=thermostat_setpoint"}
+Number FF_BedroomVE_Heating_Battery	"Batterij Verwarming slaapkamer V&E [%d %%]" <energy> (Batteries,FF_Bedroom_VE,gFF) {zwave="45:command=battery"}
 
 // Sort of Scenes
 Number GF_All_lights	"Lampen woonkamer"	<light> (GF_Living,GF_Living_Lights, Lights)
@@ -131,4 +131,5 @@ Switch FF_WCD_slaapkamer_Notification "Notificatie WCD Slaapkamer Vincent" <sock
 Switch GF_WCD_WK_Lamp_Notification    "Notificatie WCD woonkamer lamp" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F0003B9C40B/notification:command:*:${command} WCD WK Lamp]"  }
 Switch SF_WCD_Zolder_Notification   "Notificatie WCD Zolder" <socket> (PlugwiseNotifications) { mqtt=">[localbroker:plugwiseplugs/000D6F00035628DE/notification:command:*:${command} WCD Zolder]"  }
 
-Switch Alarm "Alarm" (All)
+Switch Alarm_Living "Alarm woonkamer" (All)
+Switch Alarm_Corridor "Alarm hal beneden" (All)

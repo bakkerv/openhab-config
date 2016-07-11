@@ -17,7 +17,7 @@ sitemap demo label="Hoofdmenu"
 	}
 	Frame label="Verlichting" icon="hue" {
 	      Group item=Lights label="Verlichting" icon="hue"
-   	      Selection item=GF_All_lights icon="hue" mappings=[ 0="Allen uit", 1="Allen aan" ]
+   	      Selection item=GF_All_lights icon="hue" mappings=[ 0="Allen uit", 1="Allen aan", 2="Gedeeltelijk aan" ]
 	}
 	Frame label="Klimaat" {
 		Text item=Weather_Temperature valuecolor=[Weather_LastUpdate=="Uninitialized"="lightgray",Weather_LastUpdate>90="lightgray",>25="orange",>15="green",>5="orange",<=5="blue"] {
@@ -46,7 +46,8 @@ sitemap demo label="Hoofdmenu"
 		Group item=XBMC_Living label="XBMC woonkamer" icon="video"
 	}
 	Frame {
-		Switch item=Alarm label="Alarm"
+		Switch item=Alarm_Living label="Alarm woonkamer"
+		Switch item=Alarm_Corridor label="Alarm hal"
 	}
         Frame {
                 Group item=Batteries label="Batterijniveau's" icon="energy"

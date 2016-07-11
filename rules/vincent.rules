@@ -7,13 +7,21 @@ import org.joda.time.*
 
 //var Number counter = 1
 
-rule "Alarm rules"
+rule "Alarm rules Living"
 when
-	Item GF_Corridor_Motion changed from CLOSED to OPEN or
 	Item GF_Living_Motion changed from CLOSED to OPEN
 then
-	if (Alarm.state == ON) {
-		   pushNotification("Alarm", "Somebody is in the house!")
+	if (Alarm_Living.state == ON) {
+		   pushNotification("Alarm", "Somebody is in the living room!")
+	}
+end
+
+rule "Alarm rules Corridor"
+when
+	Item GF_Corridor_Motion changed from CLOSED to OPEN
+then
+	if (Alarm_Corridor.state == ON) {
+		   pushNotification("Alarm", "Somebody is in the corridor!")
 	}
 end
 
@@ -44,7 +52,7 @@ end
 
 rule "All Lights to on, switch lights"
 when
-	Item GF_All_lights changed to 1
+	Item GF_All_lights received update 1
 then
 	sendCommand(GF_Living_Lamp_TV, 99)
 	sendCommand(GF_Living_Lamp_Bank, 50)
@@ -54,7 +62,7 @@ end
 
 rule "All Lights to off, switch lights"
 when
-	Item GF_All_lights changed  to 0
+	Item GF_All_lights received update 0
 then
 	sendCommand(GF_Living_Lamp_TV, 0)
 	sendCommand(GF_Living_Lamp_Bank, 0)
