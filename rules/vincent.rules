@@ -34,6 +34,7 @@ then
 	var set = Daylight_End_Time.state as DateTimeType
 	var rise_dt =  new Instant(rise.calendar.timeInMillis)
 	var set_dt = new Instant(set.calendar.timeInMillis)
+        logInfo("CorridorRule","Rise {}, set {}, rise_dt {}, set_dt {}, now {}", rise, set, rise_dt, set_dt, now)
 	if ( now.isBefore(rise_dt) || now.isAfter(set_dt) ) {
 		sendCommand(GF_Corridor_Lamp, ON)
         	//createTimer(now.plusMinutes(3)) [|
@@ -101,7 +102,7 @@ then
 	var set = Daylight_End_Time.state as DateTimeType
 	var rise_dt =  new Instant(rise.calendar.timeInMillis)
 	var set_dt = new Instant(set.calendar.timeInMillis)
-
+        logInfo("LivingLightsRule","Rise {}, set {}, rise_dt {}, set_dt {}, now {}", rise, set, rise_dt, set_dt, now)
 	if ( GF_Living_Motion.state == OPEN && 
 		!(GF_Living_Lamp_TV.state > 0 || GF_Living_Lamp_Bank.state > 0 || GF_Kitchen_Lamp.state > 0) &&
 	 	(now.isBefore(rise_dt) || now.isAfter(set_dt))) {

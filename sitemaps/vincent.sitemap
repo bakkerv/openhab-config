@@ -6,18 +6,20 @@ sitemap demo label="Hoofdmenu"
 	}
 	Frame label="Aanwezigheidsensoren" {
 		Text item=GF_Living_Motion {
-			Chart item=GF_Living_Motion period=h
+			Webview url="http://192.168.60.50:3000/dashboard-solo/db/aanwezigheid?panelId=1&theme=light" height=11
 		}
 		Text item=GF_Corridor_Motion {
-			Chart item=GF_Corridor_Motion period=h
+			Webview url="http://192.168.60.50:3000/dashboard-solo/db/aanwezigheid?panelId=2&theme=light" height=11
+			//Chart item=GF_Corridor_Motion period=h
 		}
 		Text item=GF_WC_Motion {
-			Chart item=GF_WC_Motion period=h
+			Webview url="http://192.168.60.50:3000/dashboard-solo/db/aanwezigheid?panelId=3&theme=light" height=11
+			//Chart item=GF_WC_Motion period=h
 		}
 	}
 	Frame label="Verlichting" icon="hue" {
 	      Group item=Lights label="Verlichting" icon="hue"
-   	      Selection item=GF_All_lights icon="hue" mappings=[ 0="Allen uit", 1="Allen aan", 2="Gedeeltelijk aan" ]
+   	      Selection item=GF_All_lights icon="hue" mappings=[ "1"="Aan", "0"="Uit" ]
 	}
 	Frame label="Klimaat" {
 		Text item=Weather_Temperature valuecolor=[Weather_LastUpdate=="Uninitialized"="lightgray",Weather_LastUpdate>90="lightgray",>25="orange",>15="green",>5="orange",<=5="blue"] {
@@ -37,7 +39,7 @@ sitemap demo label="Hoofdmenu"
 	}
 	Frame label="Energieverbruik" {
 		Group item=Plugwise label="Plugwise pluggen" icon="socket" 
-		Group item=PlugwiseNotifications label="Plugwise notificaties" icon="socket" 
+		Group item=PlugwiseSwitches label="Plugwise schakelaars" icon="socket" 
 	}
 	Frame label="Datum" {
 		Text item=Date
